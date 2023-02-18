@@ -31,6 +31,28 @@ A general description of components is available here: https://aframe.io/docs/ma
 ### Defining a component
 A component is defined using Javascript in a `<script>` inside an html document. To define a component you must call the function 
 
+### Debugging and throttling
+
+To debug the code of the component it is useful to output information to the console. To do this one can always use 
+```
+console.log()
+```
+However, console output is a slow operation. We do not want to be doing this every frame. For this reason we put all debugging code into the function 
+```
+debug(t,dt)
+```
+and make sure to throttle it: we try to run it on every frame by calling:
+```
+this.debug(t,dt);
+```
+in the ```tick(t,dt)``` function. However the line:
+``` 
+this.debug = AFRAME.utils.throttle(this.debug, 1000, this);
+```
+makes sure that the function call gets ignored most of the time and it gets executed at most 1 time every 1000ms. 
+
+You can put debugging code into ```this.debug(t,dt)```.
+
 [AFRAME.registerComponent(name,definition)](https://aframe.io/docs/master/core/component.html#aframe-registercomponent-name-definition)
 
 The first argument to the function, `name`, is a *string* with the name of your component
