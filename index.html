@@ -36,13 +36,13 @@
 
     <script>
       /* A-Frame logic is stored in components and in systems.
-            Components are logic attached to an `<a-entity>` while systems are global and
-            are attached to a scene. Here we focus on defining a component
+                Components are logic attached to an `<a-entity>` while systems are global and
+                are attached to a scene. Here we focus on defining a component
 
-            Documentation for writing components is found here:
-            https://aframe.io/docs/master/core/component.html
-            */
-      AFRAME.registerComponent("my-component", {
+                Documentation for writing components is found here:
+                https://aframe.io/docs/master/core/component.html
+                */
+      AFRAME.registerComponent("position-tracking", {
         // A new instance of the component gets created for each <a-entity> the component is attached to
 
         // The init function gets executed each time an instance of the component is created
@@ -50,7 +50,9 @@
           // The given instance of the component can be accessed using the `this` variable
           // for example: this.name refers to the string representation of the component name
           console.log(
-            "Hello, " + this.name + " is being initialized on the element"
+            "Hello, " +
+              this.name +
+              " is being initialized on the element (MODIFICATION TEST)"
           );
           // this.el refers to the <a-entity> this component is attached to
           console.log(this.el);
@@ -63,7 +65,11 @@
         debug: function (t, dt) {
           // This debugging functions is NOT executed automatically
           // It gets called from the "tick" function
-          console.log("This is a debugging function");
+          console.log("This is a debugging function (MODIFICATION TEST)");
+          // Printing x, y, z values //
+          console.log("x-position: " + this.el.object3D.position.x);
+          console.log("y-position: " + this.el.object3D.position.y);
+          console.log("z-position: " + this.el.object3D.position.z);
         },
         tick: function (t, dt) {
           // This function (tick) gets called on each rendered frame
@@ -71,14 +77,20 @@
           // dt is the time in milliseconds since the last rendered frame
 
           /* the object3D property of the <a-entity> refers to the javascript object that contains information about the 3D shape
-  See
-  https://aframe.io/docs/master/core/entity.html#object3d
-  and
-  https://threejs.org/docs/#api/en/core/Object3D
-  for information of properties
-          */
-          this.el.object3D.rotation.x = t / 100;
-          this.el.object3D.rotation.y = t / 300;
+      See
+      https://aframe.io/docs/master/core/entity.html#object3d
+      and
+      https://threejs.org/docs/#api/en/core/Object3D
+      for information of properties
+              */
+
+          /* [COMMENTING OUT ROTATION CODE]
+          this.el.object3D.rotation.x = t / 1000;
+          this.el.object3D.rotation.y = t / 3000;*/
+
+          this.el.object3D.position.x;
+          this.el.object3D.position.y;
+          this.el.object3D.position.z;
 
           // The following code is responsible for calling the debugging function
           this.debug(t, dt);
@@ -86,7 +98,7 @@
       });
     </script>
     <a-scene>
-      <a-entity id="rig" movement-controls position="0 0 0">
+      <a-entity id="rig" movement-controls position="0 0 0" position-tracking>
         <a-entity
           id="camera"
           camera="fov:55"
@@ -113,7 +125,6 @@
         material="color: red"
         position="1 0 -5"
         rotation="0 0 0"
-        my-component
       ></a-entity>
 
       <a-entity
